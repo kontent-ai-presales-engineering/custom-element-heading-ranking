@@ -1,6 +1,4 @@
-export type Value = Readonly<{
-  valueKey: string;
-}>;
+export type Value = null;
 
 export const parseValue = (input: string | null): Value | null | "invalidValue" => {
   if (input === null) {

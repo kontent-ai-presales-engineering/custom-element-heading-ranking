@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <EnsureKontentAsParent>
-      <CustomElementContext height={500}>
+      <CustomElementContext height="dynamic">
         <IntegrationApp />
       </CustomElementContext>
     </EnsureKontentAsParent>
