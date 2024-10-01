@@ -4,6 +4,8 @@ import { useElements } from './customElement/selectors';
 import { DeliveryClient } from '@kontent-ai/delivery-sdk';
 import { Config } from './customElement/config';
 import { useDebouncedCallback } from 'use-debounce';
+import { Loader } from './customElement/Loader';
+import { sections } from "./integrationApp.module.css";
 
 export const IntegrationApp = () => {
   const config = useConfig();
@@ -11,7 +13,7 @@ export const IntegrationApp = () => {
   const item = useItemInfo();
   const variant = useVariantInfo();
 
-  const [foundIssues, setFoundIssues] = useState<ReadonlyMap<string, ReadonlyArray<Issue>>>(new Map());
+  const [foundIssues, setFoundIssues] = useState<ReadonlyMap<string, ReadonlyArray<Issue>> | null>(null);
 
   const deliveryClient = useMemo(() =>
     new DeliveryClient({ environmentId, previewApiKey: config.previewApiKey, defaultQueryConfig: { usePreviewMode: true, waitForLoadingNewContent: true } })
@@ -34,31 +36,45 @@ export const IntegrationApp = () => {
       return;
     }
 
+    setFoundIssues(null);
     updateIssues();
   }, [watchedElements, updateIssues]);
 
   useDynamicHeight(foundIssues);
 
+  const issues = useMemo(() => [...foundIssues?.entries() ?? []].filter(issues => issues[1].length > 0), [foundIssues]);
+
+  if (foundIssues === null) {
+    return <Loader />;
+  }
+
   return (
     <div style={{ paddingTop: 10 }}>
-      <h1>Found heading issues</h1>
-      {[...foundIssues.entries()]
-        .filter(([, issues]) => issues.length > 0)
-        .map(([codename, issues]) => (
-          <div key={codename}>
-            <h2>{codename}</h2>
-            {issues.map(({ message }, index) => (
-              <div key={index}>
-                {message}
-              </div>
-            ))}
-          </div>
-        ))}
+      {issues.length > 0 ? <FoundIssues issues={issues} /> : <h1>No issues found</h1>}
     </div>
   );
 };
 
 IntegrationApp.displayName = 'IntegrationApp';
+
+const FoundIssues = ({ issues }: { issues: ReadonlyArray<readonly [string, ReadonlyArray<Issue>]> }) => (
+  <>
+    <h1>Found heading issues</h1>
+    <div className={sections}>
+      {issues.map(([codename, issues]) => (
+        <section key={codename} className="section">
+          <h2>{codename}</h2>
+          {issues.map((issue, index) => (
+            <p key={index} className={`section info ${issue.type === "error" ? "red" : "orange"}`}>
+              {issue.message}
+            </p>
+          ))}
+        </section>
+      ))}
+    </div>
+  </>
+);
+
 
 type Issue = Readonly<{
   type: 'error' | 'warning';

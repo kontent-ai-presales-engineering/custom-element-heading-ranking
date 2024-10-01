@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useLayoutEffect, useMemo } from "react";
 import { ReactNode, useState } from "react";
 import { Config, configSchema } from "./config";
 import { Value, parseValue } from "./value";
+import { Loader } from "./Loader";
 
 // hooks are only ever used in the react tree so this is fine
 /* eslint-disable react-refresh/only-export-components */
@@ -110,7 +111,7 @@ export const CustomElementContext = (props: CustomElementContextProps) => {
   }
 
   if (!context) {
-    return <h1>Loading...</h1>;
+    return <Loader />;
   }
 
   return (
