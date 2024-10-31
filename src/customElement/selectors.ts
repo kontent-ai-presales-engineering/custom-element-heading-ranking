@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 export const getElement = (elementCodename: string): Promise<ElementValue> => new Promise(resolve => {
-  // CustomElement.getElementValue(elementCodename, resolve);
-  resolve("value");
+  CustomElement.getElementValue(elementCodename, resolve);
 });
 
 export const useElements = (elementCodenames: ReadonlyArray<string>) => {
