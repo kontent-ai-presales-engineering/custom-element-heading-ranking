@@ -82,7 +82,7 @@ export const CustomElementContext = (props: CustomElementContextProps) => {
       }
 
       setValue(parsedValue === "invalidValue" ? null : parsedValue);
-      setConfig(parsedConfig.data);
+      setConfig(parsedConfig.data ?? {});
       setIsDisabled(element.disabled);
       setEnvironmentId(context.projectId);
       setItem(context.item);
