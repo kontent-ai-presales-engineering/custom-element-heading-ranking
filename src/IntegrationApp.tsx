@@ -19,6 +19,8 @@ export const IntegrationApp = () => {
     new DeliveryClient({ environmentId, previewApiKey: config.previewApiKey, defaultQueryConfig: { usePreviewMode: true, waitForLoadingNewContent: true } })
     , [environmentId, config.previewApiKey]);
 
+  const watchedElements = useElements(config.elementsCodenames);
+
   const updateIssues = useDebouncedCallback(() =>
     deliveryClient
       .item(item.codename)
@@ -30,9 +32,13 @@ export const IntegrationApp = () => {
     4000);
 
   useEffect(() => {
+    if (!watchedElements) {
+      return;
+    }
+
     setFoundIssues(null);
     updateIssues();
-  }, [updateIssues]);
+  }, [watchedElements, updateIssues]);
 
   useDynamicHeight(foundIssues);
 
