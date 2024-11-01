@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-export const getElement = (elementCodename: string): Promise<ElementValue> => new Promise(resolve => {
+export const getElement = (): Promise<ElementValue> => new Promise(resolve => {
   // CustomElement.getElementValue(elementCodename, resolve);
   resolve("value");
 });
