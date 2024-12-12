@@ -1,4 +1,4 @@
-export type Value = null;
+export type Value = null | string;
 
 export const parseValue = (input: string | null): Value | null | "invalidValue" => {
   if (input === null) {

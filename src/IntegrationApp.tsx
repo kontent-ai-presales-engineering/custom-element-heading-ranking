@@ -50,12 +50,16 @@ export const IntegrationApp = () => {
   }
 
   if (issues.length === 0) {
-    setElementValue({ value: "No issues found" });
+    setElementValue("No issues found");
   }
+  else {  
+    setElementValue(null);
+  }
+
 
   return (
     <div style={{ paddingTop: 10 }}>
-      {issues.length > 0 ? <FoundIssues issues={issues} /> : <h1>No issues found</h1>}
+      {issues.length > 0 ? <FoundIssues issues={issues} /> : <h1>{elementValue}</h1>}
     </div>
   );
 };
