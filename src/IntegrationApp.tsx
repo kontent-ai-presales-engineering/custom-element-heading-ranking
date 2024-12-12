@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { useConfig, useItemInfo, useEnvironmentId, useVariantInfo } from './customElement/CustomElementContext';
+import { useConfig, useItemInfo, useEnvironmentId, useVariantInfo, useValue } from './customElement/CustomElementContext';
 import { useElements } from './customElement/selectors';
 import { DeliveryClient } from '@kontent-ai/delivery-sdk';
 import { Config } from './customElement/config';
@@ -8,6 +8,7 @@ import { Loader } from './customElement/Loader';
 import { sections } from "./integrationApp.module.css";
 
 export const IntegrationApp = () => {
+  const [elementValue, setElementValue] = useValue();
   const config = useConfig();
   const environmentId = useEnvironmentId();
   const item = useItemInfo();
@@ -46,6 +47,10 @@ export const IntegrationApp = () => {
 
   if (foundIssues === null) {
     return <Loader />;
+  }
+
+  if (issues.length === 0) {
+    setElementValue({ value: "No issues found" });
   }
 
   return (
