@@ -97,7 +97,7 @@ const validateElement = (elementValue: string | null, config: Config): ReadonlyA
 
   const element = document.createElement("div");
   element.innerHTML = elementValue;
-  const headings = [...element.querySelectorAll('h1, h2, h3, h4, h5, h6').values()];
+  const headings = [...element.querySelectorAll(config.skipMultipleH1sWarning ? '' : 'h1, ' + 'h2, h3, h4, h5, h6').values()];
 
   const headingOrderIssues = headings.reduce<ValidateElementAccumulator>(checkHeading, { issues: [], previousHeadingLevel: config.startingLevel ?? 0, previousElement: null });
 
